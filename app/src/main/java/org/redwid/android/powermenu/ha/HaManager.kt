@@ -1,11 +1,12 @@
-package org.redwid.android.powermenu
+package org.redwid.android.powermenu.ha
 
 import android.content.Context
 import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
-import org.redwid.android.powermenu.model.Event
-import org.redwid.android.powermenu.model.HaAPI
+import org.redwid.android.powermenu.R
+import org.redwid.android.powermenu.ha.model.Event
+import org.redwid.android.powermenu.ha.model.HaAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,12 +26,18 @@ class HaManager {
         fireEvent(context, "rock64_sleep")
     }
 
+    fun notifyWakeUp(context: Context?) {
+        Log.d(LOG_TAG, "notifySleep()")
+        fireEvent(context, "rock64_wake_up")
+    }
+
     fun notifyPowerOff(context: Context?) {
         Log.d(LOG_TAG, "notifySleep()")
         fireEvent(context, "rock64_power_off")
     }
 
     private fun fireEvent(context: Context?, eventId: String) {
+        Log.d(LOG_TAG, "fireEvent(), eventId: $eventId")
         context?.let {
             val data: Call<ResponseBody> = getRetrofit(it).fireEvent(eventId, getEvent())
             data.enqueue(getCallback())
@@ -60,8 +67,7 @@ class HaManager {
             .client(okHttpBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val service: HaAPI = retrofit.create<HaAPI>(HaAPI::class.java)
-        return service
+        return retrofit.create(HaAPI::class.java)
     }
 
     internal fun getCallback(): Callback<ResponseBody> {
@@ -84,6 +90,6 @@ class HaManager {
     }
 
     companion object {
-        val LOG_TAG = HaManager::class.java.simpleName
+        private val LOG_TAG = HaManager::class.java.simpleName
     }
 }

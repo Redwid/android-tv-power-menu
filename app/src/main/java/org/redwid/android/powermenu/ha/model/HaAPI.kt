@@ -1,4 +1,4 @@
-package org.redwid.android.powermenu.model
+package org.redwid.android.powermenu.ha.model
 
 import okhttp3.ResponseBody
 import retrofit2.Call

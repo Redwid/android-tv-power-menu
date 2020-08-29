@@ -11,11 +11,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.redwid.android.powermenu.ha.HaManager
 import java.lang.Exception
 
-/**
- * https://thinkandroid.wordpress.com/2010/01/24/handling-screen-off-and-screen-on-intents/
- */
 class MenuActivity: AppCompatActivity() {
 
     private val SHUTDOWN_BROADCAST = "am broadcast android.intent.action.ACTION_SHUTDOWN"
@@ -94,6 +92,6 @@ class MenuActivity: AppCompatActivity() {
     }
 
     companion object {
-        private val LOG_TAG = MenuActivity.javaClass.simpleName
+        private val LOG_TAG = MenuActivity::class.java.simpleName
     }
 }
