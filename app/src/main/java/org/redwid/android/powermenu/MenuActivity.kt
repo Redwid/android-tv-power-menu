@@ -1,5 +1,7 @@
 package org.redwid.android.powermenu
 
+import android.content.Context
+import android.media.tv.TvInputManager
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
@@ -12,7 +14,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.redwid.android.powermenu.ha.HaManager
-import java.lang.Exception
+
 
 class MenuActivity: AppCompatActivity() {
 
@@ -51,6 +53,10 @@ class MenuActivity: AppCompatActivity() {
 
         button_recovery.setOnClickListener { shell_run(RESTART_RECOVERY_CMD) }
         button_bootloader.setOnClickListener { shell_run(RESTART_BOOTLOADER_CMD) }
+
+        //Usage: https://github.com/rock64-android/platform-packages-apps-TvSettings/blob/ca544f40bbb0290ad636c660e2091d7263073643/Settings/src/com/android/tv/settings/system/InputsFragment.java
+        //val tvInputManager = getSystemService(Context.TV_INPUT_SERVICE) as TvInputManager
+        //Log.d(LOG_TAG, "onCreate(), tvInputManager: $tvInputManager")
     }
 
     private fun shell_run(cmd: String) {
