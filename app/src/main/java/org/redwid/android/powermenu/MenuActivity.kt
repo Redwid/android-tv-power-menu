@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * https://thinkandroid.wordpress.com/2010/01/24/handling-screen-off-and-screen-on-intents/
@@ -61,11 +62,16 @@ class MenuActivity: AppCompatActivity() {
 
         GlobalScope.launch(Dispatchers.IO) {
             var time = System.currentTimeMillis()
-            Shell.Pool.SU.run(SHUTDOWN_BROADCAST)
-            Shell.Pool.SU.run(cmd)
-            time = System.currentTimeMillis() - time
-            if(time < 500) {
-                delay(500 - time)
+            try {
+                Shell.Pool.SU.run(SHUTDOWN_BROADCAST)
+                Shell.Pool.SU.run(cmd)
+                time = System.currentTimeMillis() - time
+                if (time < 500) {
+                    delay(500 - time)
+                }
+            } catch (e: Exception) {
+                Log.e(LOG_TAG, "Unable to run shell command: $cmd")
+                e.printStackTrace()
             }
             finish()
         }

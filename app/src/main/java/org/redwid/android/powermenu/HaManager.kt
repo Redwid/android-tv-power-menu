@@ -42,20 +42,22 @@ class HaManager {
     }
 
     private fun getRetrofit(context: Context): HaAPI {
-        val builder = OkHttpClient.Builder()
-        builder.connectTimeout(30, TimeUnit.SECONDS)
+        val okHttpBuilder = OkHttpClient.Builder()
+        okHttpBuilder.connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .followRedirects(true)
             .followSslRedirects(true)
             .addInterceptor { chain ->
+                Log.d("Value", context.getString(R.string.ha_token))
                 val newRequest = chain.request().newBuilder()
-                    .addHeader("Authorization: Bearer", context.getString(R.string.ha_token))
+                    .addHeader("Authorization", "Bearer ${context.getString(R.string.ha_token)}")
                 .build()
                 chain.proceed(newRequest)
             }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://${context.getString(R.string.ha_url)}}:8123/")
+            .baseUrl("http://${context.getString(R.string.ha_url)}:8123/")
+            .client(okHttpBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val service: HaAPI = retrofit.create<HaAPI>(HaAPI::class.java)
