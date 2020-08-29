@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+apply from: '../ha.properties'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -13,7 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        resValue "string", "ha_token", ha_token
+        resValue "string", "ha_url", ha_url
     }
 
     buildTypes {
